@@ -12,6 +12,10 @@ cfg_net! {
     }
 
 impl MachPortRecv {
+    pub fn from_mio(inner: mio::net::MachPortRecvRight) -> std::io::Result<Self> {
+        let io = PollEvented::new_with_interest(inner, Interest::MACH_PORT)?;
+        Ok(Self { io })
+    }
     pub fn new() -> std::io::Result<Self> {
         let inner = mio::net::MachPortRecvRight::new();
         let io = PollEvented::new_with_interest(inner, Interest::MACH_PORT)?;
