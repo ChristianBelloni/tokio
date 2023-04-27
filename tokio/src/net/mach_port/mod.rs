@@ -10,9 +10,13 @@ cfg_net! {
     pub struct MachPortRecv {
         io: PollEvented<mio::net::MachPortRecvRight>,
     }
-}
 
 impl MachPortRecv {
+    pub fn new() -> std::io::Result<Self> {
+        let inner = mio::net::MachPortRecvRight::new();
+        let io = PollEvented::new_with_interest(inner, Interest::MACH_PORT)?;
+        Ok(Self { io })
+    }
     /// Waits for any of the requested ready states.
     ///
     /// This function is usually paired with `try_read()` or `try_write()`. It
@@ -55,4 +59,5 @@ impl AsyncRead for MachPortRecv {
     ) -> Poll<io::Result<()>> {
         self.poll_read_priv(cx, buf)
     }
+}
 }
