@@ -23,6 +23,7 @@
 //! [`UnixDatagram`]: UnixDatagram
 
 mod addr;
+
 cfg_not_wasi! {
     #[cfg(feature = "net")]
     pub(crate) use addr::to_socket_addrs;
@@ -53,4 +54,9 @@ cfg_net_unix! {
 
 cfg_net_windows! {
     pub mod windows;
+}
+
+cfg_net_macos! {
+    pub mod mach_port;
+    pub use mach_port::*;
 }

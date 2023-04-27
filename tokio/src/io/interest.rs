@@ -32,6 +32,9 @@ impl Interest {
         /// Interest for POSIX AIO lio_listio events.
         #[cfg(not(target_os = "freebsd"))]
         pub const LIO: Interest = Interest(mio::Interest::READABLE);
+
+        #[cfg(target_os = "macos")]
+        pub const MACH_PORT: Interest = Interest(mio::Interest::MACH_PORT);
     }
 
     /// Interest in all readable events.
@@ -43,6 +46,8 @@ impl Interest {
     ///
     /// Writable interest includes write-closed events.
     pub const WRITABLE: Interest = Interest(mio::Interest::WRITABLE);
+    #[cfg(target_os = "macos")]
+    pub const MACH_PORT: Interest = Interest(mio::Interest::MACH_PORT);
 
     /// Returns true if the value includes readable interest.
     ///

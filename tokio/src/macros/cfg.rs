@@ -258,6 +258,16 @@ macro_rules! cfg_net_windows {
     }
 }
 
+macro_rules! cfg_net_macos {
+    ($($item:item)*) => {
+        $(
+            #[cfg(all(any(all(doc, docsrs), target_os="macos"), feature = "net"))]
+            #[cfg_attr(docsrs, doc(cfg(all(target_os ="macos", feature = "net"))))]
+            $item
+        )*
+    }
+}
+
 macro_rules! cfg_process {
     ($($item:item)*) => {
         $(
